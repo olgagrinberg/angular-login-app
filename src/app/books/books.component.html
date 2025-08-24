@@ -31,7 +31,9 @@
           class="genre-select"
         >
           <option value="">All Genres</option>
-          <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+          @for (genre of genres; track genre) {
+            <option [value]="genre">{{ genre }}</option>
+          }
         </select>
 
         <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
@@ -42,37 +44,42 @@
   <!-- Books Grid -->
   <div class="books-container">
     <div class="books-grid">
-      <div class="book-card" *ngFor="let book of filteredBooks">
-        <div class="book-cover">
-          <img [src]="book.cover" [alt]="book.title" />
-        </div>
-
-        <div class="book-info">
-          <h3 class="book-title">{{ book.title }}</h3>
-          <p class="book-author">by {{ book.author }}</p>
-          <p class="book-year">{{ book.year }}</p>
-
-          <div class="book-rating">
-            <span class="stars">
-              <span *ngFor="let star of getStars(book.rating)"
-                    [class]="star === '★' ? 'filled' : 'empty'">{{ star }}</span>
-            </span>
-            <span class="rating-number">({{ book.rating }})</span>
+      @for (book of filteredBooks; track book.id) {
+        <div class="book-card">
+          <div class="book-cover">
+            <img [src]="book.cover" [alt]="book.title" />
           </div>
 
-          <div class="book-genre">
-            <span class="genre-tag">{{ book.genre }}</span>
-          </div>
+          <div class="book-info">
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="book-author">by {{ book.author }}</p>
+            <p class="book-year">{{ book.year }}</p>
 
-          <p class="book-description">{{ book.description }}</p>
+            <div class="book-rating">
+        <span class="stars">
+          @for (star of getStars(book.rating); track $index) {
+            <span [class]="star === '★' ? 'filled' : 'empty'">{{ star }}</span>
+          }
+        </span>
+              <span class="rating-number">({{ book.rating }})</span>
+            </div>
+
+            <div class="book-genre">
+              <span class="genre-tag">{{ book.genre }}</span>
+            </div>
+
+            <p class="book-description">{{ book.description }}</p>
+          </div>
         </div>
-      </div>
+      }
     </div>
 
     <!-- No Results Message -->
-    <div class="no-results" *ngIf="filteredBooks.length === 0">
-      <h3>No books found</h3>
-      <p>Try adjusting your search criteria or clear the filters.</p>
-    </div>
+    @if (filteredBooks.length === 0) {
+      <div class="no-results">
+        <h3>No books found</h3>
+        <p>Try adjusting your search criteria or clear the filters.</p>
+      </div>
+    }
   </div>
 </div>

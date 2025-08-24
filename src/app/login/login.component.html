@@ -66,12 +66,17 @@
         <p>Password: <code>password</code></p>
       </div>
 
-      <div class="message success" *ngIf="successMessage">
-        {{ successMessage }}
-      </div>
-      <div class="message error" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
+      @if (successMessage) {
+        <div class="message success">
+          {{ successMessage }}
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="message error">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   </div>
 </div>
